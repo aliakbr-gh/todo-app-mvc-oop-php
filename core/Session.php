@@ -2,11 +2,23 @@
 
 class Session
 {
+    private const SESSION_TIMEOUT = 60;
+
     public static function start(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+
+        if (isset($_SESSION['LAST_ACTIVITY'])) {
+            $inactive = time() - $_SESSION['LAST_ACTIVITY'];
+            if ($inactive > self::SESSION_TIMEOUT) {
+                self::destroy();
+                session_start();
+            }
+        }
+
+        $_SESSION['LAST_ACTIVITY'] = time();
     }
 
     public static function set(string $key, $value): void
@@ -24,7 +36,6 @@ class Session
         unset($_SESSION[$key]);
     }
 
-    // Flash messages for toaster
     public static function flash(string $key, $value = null)
     {
         if ($value === null) {
@@ -41,6 +52,8 @@ class Session
 
     public static function destroy(): void
     {
+        $_SESSION = [];
+        session_unset();
         session_destroy();
     }
 }
