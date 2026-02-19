@@ -10,6 +10,7 @@
         <tr>
             <th>Title</th>
             <th>Description</th>
+            <th>Image</th>
             <th style="width:150px;">Actions</th>
         </tr>
         </thead>
@@ -18,6 +19,13 @@
             <tr>
                 <td><?= htmlspecialchars($todo['title']) ?></td>
                 <td><?= nl2br(htmlspecialchars($todo['description'])) ?></td>
+                <td>
+                    <?php if (!empty($todo['image_path'])): ?>
+                        <img src="<?= BASE_URL . htmlspecialchars($todo['image_path']) ?>" alt="Todo image" style="max-width:90px;height:auto;border-radius:6px;border:1px solid #ddd;">
+                    <?php else: ?>
+                        <span>-</span>
+                    <?php endif; ?>
+                </td>
                 <td>
                     <a class="btn btn-link" href="<?= BASE_URL ?>/todos/edit?id=<?= $todo['id'] ?>">Edit</a>
                     <form

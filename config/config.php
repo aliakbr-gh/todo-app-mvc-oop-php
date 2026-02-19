@@ -14,6 +14,11 @@ define('LOG_FILE_ENABLED', true);
 define('LOG_DB_ENABLED', true);
 define('LOG_FILE_PATH', BASE_PATH . '/storage/logs/app.log');
 
+// Upload config
+define('UPLOAD_MAX_FILE_SIZE', 2 * 1024 * 1024);
+define('UPLOAD_ALLOWED_EXTENSIONS', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+define('UPLOAD_TODO_DIR', BASE_PATH . '/storage/uploads/todos');
+
 // Rate limiter config
 define('RATE_LIMIT_ENABLED', true);
 define('RATE_LIMIT_PER_SECOND', 5);

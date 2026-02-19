@@ -30,16 +30,16 @@ class Todo
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create(int $userId, string $title, string $description): bool
+    public function create(int $userId, string $title, string $description, ?string $imagePath = null): bool
     {
-        $stmt = $this->db->prepare("INSERT INTO todos (user_id, title, description) VALUES (?, ?, ?)");
-        return $stmt->execute([$userId, $title, $description]);
+        $stmt = $this->db->prepare("INSERT INTO todos (user_id, title, description, image_path) VALUES (?, ?, ?, ?)");
+        return $stmt->execute([$userId, $title, $description, $imagePath]);
     }
 
-    public function update(int $id, int $userId, string $title, string $description): bool
+    public function update(int $id, int $userId, string $title, string $description, ?string $imagePath = null): bool
     {
-        $stmt = $this->db->prepare("UPDATE todos SET title = ?, description = ? WHERE id = ? AND user_id = ?");
-        return $stmt->execute([$title, $description, $id, $userId]);
+        $stmt = $this->db->prepare("UPDATE todos SET title = ?, description = ?, image_path = ? WHERE id = ? AND user_id = ?");
+        return $stmt->execute([$title, $description, $imagePath, $id, $userId]);
     }
 
     public function delete(int $id, int $userId): bool

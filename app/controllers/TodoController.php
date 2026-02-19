@@ -23,14 +23,22 @@ class TodoController extends Controller
 
         $title = trim($_POST['title'] ?? '');
         $desc  = trim($_POST['description'] ?? '');
+        $imagePath = null;
 
         if (!$title) {
             Session::flash('error', 'Title is required.');
             return $this->redirect('/todos/create');
         }
 
+        try {
+            $imagePath = Uploader::uploadImage($_FILES['image'] ?? [], UPLOAD_TODO_DIR);
+        } catch (RuntimeException $e) {
+            Session::flash('error', $e->getMessage());
+            return $this->redirect('/todos/create');
+        }
+
         $todoModel = new Todo();
-        $todoModel->create($userId, $title, $desc);
+        $todoModel->create($userId, $title, $desc, $imagePath);
 
         Session::flash('success', 'Todo created successfully.');
         return $this->redirect('/todos');
@@ -61,8 +69,28 @@ class TodoController extends Controller
         }
 
         $todoModel = new Todo();
-        Authorization::ensureOwner($todoModel->findById($id), $userId, 'todo', '/todos');
-        $todoModel->update($id, $userId, $title, $desc);
+        $todo = Authorization::ensureOwner($todoModel->findById($id), $userId, 'todo', '/todos');
+
+        $imagePath = $todo['image_path'] ?? null;
+        $removeImage = isset($_POST['remove_image']) && $_POST['remove_image'] === '1';
+
+        if ($removeImage) {
+            Uploader::delete($imagePath);
+            $imagePath = null;
+        }
+
+        try {
+            $newImagePath = Uploader::uploadImage($_FILES['image'] ?? [], UPLOAD_TODO_DIR);
+            if ($newImagePath) {
+                Uploader::delete($imagePath);
+                $imagePath = $newImagePath;
+            }
+        } catch (RuntimeException $e) {
+            Session::flash('error', $e->getMessage());
+            return $this->redirect('/todos/edit?id=' . $id);
+        }
+
+        $todoModel->update($id, $userId, $title, $desc, $imagePath);
 
         Session::flash('success', 'Todo updated successfully.');
         return $this->redirect('/todos');
@@ -74,7 +102,8 @@ class TodoController extends Controller
         $id = (int) ($_POST['id'] ?? 0);
         $todoModel = new Todo();
 
-        Authorization::ensureOwner($todoModel->findById($id), $userId, 'todo', '/todos');
+        $todo = Authorization::ensureOwner($todoModel->findById($id), $userId, 'todo', '/todos');
+        Uploader::delete($todo['image_path'] ?? null);
         $todoModel->delete($id, $userId);
 
         Session::flash('success', 'Todo deleted.');

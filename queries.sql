@@ -15,9 +15,13 @@ CREATE TABLE todos (
     user_id INT UNSIGNED NOT NULL,
     title VARCHAR(255) NOT NULL,
     description TEXT,
+    image_path VARCHAR(255) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+-- Run on existing databases (one-time):
+-- ALTER TABLE todos ADD COLUMN image_path VARCHAR(255) NULL AFTER description;
 
 CREATE TABLE app_logs (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

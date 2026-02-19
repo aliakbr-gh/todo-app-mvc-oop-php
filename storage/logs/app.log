@@ -74,3 +74,16 @@
 [2026-02-19 06:09:22] user_id=3 ip=::1 method=GET path=/mvc/todos/create
 [2026-02-19 06:09:24] user_id=3 ip=::1 method=POST path=/mvc/todos
 [2026-02-19 06:09:24] user_id=3 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 06:09:59] user_id=3 ip=::1 method=POST path=/mvc/todos/delete
+[2026-02-19 06:09:59] user_id=3 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 06:16:52] user_id=3 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 06:17:44] user_id=3 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 06:17:45] user_id=3 ip=::1 method=GET path=/mvc/todos/create
+[2026-02-19 06:17:52] user_id=3 ip=::1 method=POST path=/mvc/todos
+[2026-02-19 06:17:52] user_id=3 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 06:18:16] user_id=3 ip=::1 method=GET path=/mvc/todos/edit
+[2026-02-19 06:18:18] user_id=3 ip=::1 method=POST path=/mvc/todos/update
+[2026-02-19 06:18:18] user_id=3 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 06:18:24] user_id=3 ip=::1 method=GET path=/mvc/todos/create
+[2026-02-19 06:18:37] user_id=3 ip=::1 method=POST path=/mvc/todos
+[2026-02-19 06:18:37] user_id=3 ip=::1 method=GET path=/mvc/todos
