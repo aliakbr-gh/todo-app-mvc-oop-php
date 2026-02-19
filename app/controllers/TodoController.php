@@ -2,24 +2,6 @@
 
 class TodoController extends Controller
 {
-    private function authorizeTodoOwner(int $todoId, int $userId): ?array
-    {
-        $todoModel = new Todo();
-        $todo = $todoModel->findById($todoId);
-
-        if (!$todo) {
-            Session::flash('error', 'Todo not found.');
-            $this->redirect('/todos');
-        }
-
-        if ((int) $todo['user_id'] !== $userId) {
-            Session::flash('error', 'You are not authorized to access this todo.');
-            $this->redirect('/todos');
-        }
-
-        return $todo;
-    }
-
     public function index()
     {
         $userId = $this->currentUserId();
@@ -58,8 +40,9 @@ class TodoController extends Controller
     {
         $userId = $this->currentUserId();
         $id = (int) ($_GET['id'] ?? 0);
+        $todoModel = new Todo();
 
-        $todo = $this->authorizeTodoOwner($id, $userId);
+        $todo = Authorization::ensureOwner($todoModel->findById($id), $userId, 'todo', '/todos');
 
         $this->view('todo/edit', compact('todo'));
     }
@@ -77,9 +60,8 @@ class TodoController extends Controller
             return $this->redirect('/todos/edit?id=' . $id);
         }
 
-        $this->authorizeTodoOwner($id, $userId);
-
         $todoModel = new Todo();
+        Authorization::ensureOwner($todoModel->findById($id), $userId, 'todo', '/todos');
         $todoModel->update($id, $userId, $title, $desc);
 
         Session::flash('success', 'Todo updated successfully.');
@@ -90,10 +72,9 @@ class TodoController extends Controller
     {
         $userId = $this->currentUserId();
         $id = (int) ($_POST['id'] ?? 0);
-
-        $this->authorizeTodoOwner($id, $userId);
-
         $todoModel = new Todo();
+
+        Authorization::ensureOwner($todoModel->findById($id), $userId, 'todo', '/todos');
         $todoModel->delete($id, $userId);
 
         Session::flash('success', 'Todo deleted.');
