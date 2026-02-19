@@ -87,3 +87,8 @@
 [2026-02-19 06:18:24] user_id=3 ip=::1 method=GET path=/mvc/todos/create
 [2026-02-19 06:18:37] user_id=3 ip=::1 method=POST path=/mvc/todos
 [2026-02-19 06:18:37] user_id=3 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 06:49:03] user_id=null ip=::1 method=GET path=/mvc/todos
+[2026-02-19 06:49:03] user_id=null ip=::1 method=GET path=/mvc/login
+[2026-02-19 06:49:07] user_id=null ip=::1 method=POST path=/mvc/login
+[2026-02-19 06:49:08] user_id=2 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 06:50:36] user_id=2 ip=::1 method=GET path=/mvc/todos
