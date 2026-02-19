@@ -23,6 +23,13 @@ class Todo
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function findById(int $id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM todos WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function create(int $userId, string $title, string $description): bool
     {
         $stmt = $this->db->prepare("INSERT INTO todos (user_id, title, description) VALUES (?, ?, ?)");

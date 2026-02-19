@@ -23,6 +23,8 @@ class Router
         $path = str_replace(BASE_URL, '', $path);
         if ($path === '') $path = '/';
 
+        Logger::request();
+
         $handler = $this->routes[$method][$path] ?? null;
 
         if (!$handler) {

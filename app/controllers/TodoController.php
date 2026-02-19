@@ -2,18 +2,29 @@
 
 class TodoController extends Controller
 {
-    private function requireAuth()
+    private function authorizeTodoOwner(int $todoId, int $userId): ?array
     {
-        if (!Session::get('user_id')) {
-            Session::flash('error', 'Please login first.');
-            $this->redirect('/login');
+        $todoModel = new Todo();
+        $todo = $todoModel->findById($todoId);
+
+        if (!$todo) {
+            Session::flash('error', 'Todo not found.');
+            $this->redirect('/todos');
         }
+
+        if ((int) $todo['user_id'] !== $userId) {
+            Session::flash('error', 'You are not authorized to access this todo.');
+            $this->redirect('/todos');
+        }
+
+        return $todo;
     }
 
     public function index()
     {
         $this->requireAuth();
-        $userId = (int) Session::get('user_id');
+        $this->requireRole(['admin', 'manager']);
+        $userId = $this->currentUserId();
 
         $todoModel = new Todo();
         $todos = $todoModel->allByUser($userId);
@@ -30,7 +41,7 @@ class TodoController extends Controller
     public function store()
     {
         $this->requireAuth();
-        $userId = (int) Session::get('user_id');
+        $userId = $this->currentUserId();
 
         $title = trim($_POST['title'] ?? '');
         $desc  = trim($_POST['description'] ?? '');
@@ -50,16 +61,10 @@ class TodoController extends Controller
     public function editForm()
     {
         $this->requireAuth();
-        $userId = (int) Session::get('user_id');
+        $userId = $this->currentUserId();
         $id = (int) ($_GET['id'] ?? 0);
 
-        $todoModel = new Todo();
-        $todo = $todoModel->find($id, $userId);
-
-        if (!$todo) {
-            Session::flash('error', 'Todo not found.');
-            return $this->redirect('/todos');
-        }
+        $todo = $this->authorizeTodoOwner($id, $userId);
 
         $this->view('todo/edit', compact('todo'));
     }
@@ -67,7 +72,7 @@ class TodoController extends Controller
     public function update()
     {
         $this->requireAuth();
-        $userId = (int) Session::get('user_id');
+        $userId = $this->currentUserId();
         $id = (int) ($_POST['id'] ?? 0);
 
         $title = trim($_POST['title'] ?? '');
@@ -77,6 +82,8 @@ class TodoController extends Controller
             Session::flash('error', 'Title is required.');
             return $this->redirect('/todos/edit?id=' . $id);
         }
+
+        $this->authorizeTodoOwner($id, $userId);
 
         $todoModel = new Todo();
         $todoModel->update($id, $userId, $title, $desc);
@@ -88,8 +95,10 @@ class TodoController extends Controller
     public function destroy()
     {
         $this->requireAuth();
-        $userId = (int) Session::get('user_id');
+        $userId = $this->currentUserId();
         $id = (int) ($_POST['id'] ?? 0);
+
+        $this->authorizeTodoOwner($id, $userId);
 
         $todoModel = new Todo();
         $todoModel->delete($id, $userId);

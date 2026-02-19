@@ -2,22 +2,15 @@
 
 class AuthController extends Controller
 {
-    private function redirectIfAuthenticated()
-    {
-        if (Session::get('user_id')) {
-            $this->redirect('/');
-        }
-    }
-
     public function showLogin()
     {
-        $this->redirectIfAuthenticated();
+        $this->requireGuest();
         $this->view('auth/login');
     }
 
     public function showRegister()
     {
-        $this->redirectIfAuthenticated();
+        $this->requireGuest();
         $this->view('auth/register');
     }
 
@@ -26,6 +19,7 @@ class AuthController extends Controller
         $name  = trim($_POST['name'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $pass  = trim($_POST['password'] ?? '');
+        $role  = 'admin';
 
         if (!$name || !$email || !$pass) {
             Session::flash('error', 'All fields are required.');
@@ -38,7 +32,7 @@ class AuthController extends Controller
             return $this->redirect('/register');
         }
 
-        if ($userModel->create($name, $email, $pass)) {
+        if ($userModel->create($name, $email, $pass, $role)) {
             Session::flash('success', 'Registration successful. Please login.');
             return $this->redirect('/login');
         }
@@ -65,15 +59,14 @@ class AuthController extends Controller
             return $this->redirect('/login');
         }
 
-        Session::set('user_id', $user['id']);
+        Auth::login($user);
         Session::flash('success', 'Logged in successfully.');
         return $this->redirect('/todos');
     }
 
     public function logout()
     {
-        Session::destroy();
-        header("Location: " . BASE_URL . '/login');
-        exit;
+        Auth::logout();
+        $this->redirect('/login');
     }
 }

@@ -2,8 +2,6 @@
 
 class Session
 {
-    private const SESSION_TIMEOUT = 60;
-
     public static function start(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -12,7 +10,8 @@ class Session
 
         if (isset($_SESSION['LAST_ACTIVITY'])) {
             $inactive = time() - $_SESSION['LAST_ACTIVITY'];
-            if ($inactive > self::SESSION_TIMEOUT) {
+            $timeout = defined('SESSION_TIMEOUT') ? (int) SESSION_TIMEOUT : 1800;
+            if ($inactive > $timeout) {
                 self::destroy();
                 session_start();
             }
@@ -55,5 +54,12 @@ class Session
         $_SESSION = [];
         session_unset();
         session_destroy();
+    }
+
+    public static function regenerate(bool $deleteOldSession = false): void
+    {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_regenerate_id($deleteOldSession);
+        }
     }
 }

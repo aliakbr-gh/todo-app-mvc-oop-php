@@ -9,10 +9,10 @@ class User
         $this->db = Database::getInstance();
     }
 
-    public function create(string $name, string $email, string $password): bool
+    public function create(string $name, string $email, string $password, string $role): bool
     {
-        $stmt = $this->db->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-        return $stmt->execute([$name, $email, password_hash($password, PASSWORD_DEFAULT)]);
+        $stmt = $this->db->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
+        return $stmt->execute([$name, $email, password_hash($password, PASSWORD_DEFAULT), $role]);
     }
 
     public function findByEmail(string $email)
