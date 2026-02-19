@@ -189,6 +189,46 @@ $errorMsg   = Session::flash('error');
             transition: opacity 0.5s ease;
             pointer-events: none;
         }
+
+        /* Confirm modal */
+        #confirm-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 16px;
+        }
+
+        #confirm-modal.show {
+            display: flex;
+        }
+
+        .confirm-card {
+            width: min(92vw, 420px);
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+            padding: 18px;
+        }
+
+        .confirm-title {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .confirm-message {
+            margin: 0 0 16px;
+            color: #444;
+        }
+
+        .confirm-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
     </style>
 </head>
 
@@ -212,6 +252,17 @@ $errorMsg   = Session::flash('error');
     <main>
         <?= $content ?>
     </main>
+
+    <div id="confirm-modal" aria-hidden="true">
+        <div class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+            <h3 id="confirm-title" class="confirm-title">Please confirm</h3>
+            <p id="confirm-message" class="confirm-message">Are you sure?</p>
+            <div class="confirm-actions">
+                <button id="confirm-cancel" type="button" class="btn btn-link">Cancel</button>
+                <button id="confirm-ok" type="button" class="btn btn-danger">Confirm</button>
+            </div>
+        </div>
+    </div>
 
     <div id="toast-container"></div>
 
@@ -261,6 +312,50 @@ $errorMsg   = Session::flash('error');
             loader.classList.add('fade-out');
             setTimeout(() => loader.style.display = 'none', 500); // match CSS transition
         });
+
+        function bindConfirmForms() {
+            const modal = document.getElementById('confirm-modal');
+            const titleEl = document.getElementById('confirm-title');
+            const messageEl = document.getElementById('confirm-message');
+            const confirmBtn = document.getElementById('confirm-ok');
+            const cancelBtn = document.getElementById('confirm-cancel');
+            let pendingForm = null;
+
+            function closeModal() {
+                modal.classList.remove('show');
+                modal.setAttribute('aria-hidden', 'true');
+                pendingForm = null;
+            }
+
+            document.querySelectorAll('form[data-confirm="true"]').forEach((form) => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    pendingForm = form;
+                    titleEl.textContent = form.dataset.confirmTitle || 'Please confirm';
+                    messageEl.textContent = form.dataset.confirmMessage || 'Are you sure?';
+                    confirmBtn.textContent = form.dataset.confirmButton || 'Confirm';
+                    modal.classList.add('show');
+                    modal.setAttribute('aria-hidden', 'false');
+                });
+            });
+
+            confirmBtn.addEventListener('click', () => {
+                if (pendingForm) {
+                    const formToSubmit = pendingForm;
+                    closeModal();
+                    formToSubmit.submit();
+                }
+            });
+
+            cancelBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', bindConfirmForms);
 
         <?php if ($successMsg): ?>
             window.addEventListener('DOMContentLoaded', function() {

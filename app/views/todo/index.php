@@ -20,9 +20,17 @@
                 <td><?= nl2br(htmlspecialchars($todo['description'])) ?></td>
                 <td>
                     <a class="btn btn-link" href="<?= BASE_URL ?>/todos/edit?id=<?= $todo['id'] ?>">Edit</a>
-                    <form method="post" action="<?= BASE_URL ?>/todos/delete" style="display:inline;">
+                    <form
+                        method="post"
+                        action="<?= BASE_URL ?>/todos/delete"
+                        style="display:inline;"
+                        data-confirm="true"
+                        data-confirm-title="Delete Todo"
+                        data-confirm-message="Delete this todo?"
+                        data-confirm-button="Delete"
+                    >
                         <input type="hidden" name="id" value="<?= $todo['id'] ?>">
-                        <button class="btn btn-danger" type="submit" onclick="return confirm('Delete this todo?')">Delete</button>
+                        <button class="btn btn-danger" type="submit">Delete</button>
                     </form>
                 </td>
             </tr>
