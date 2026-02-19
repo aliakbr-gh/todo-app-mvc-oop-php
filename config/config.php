@@ -7,7 +7,7 @@ define('DB_PASS', 'root');
 define('BASE_URL', '/mvc');
 
 // Session config
-define('SESSION_TIMEOUT', 1);
+define('SESSION_TIMEOUT', 1200);
 
 // Logging config
 define('LOG_FILE_ENABLED', true);
