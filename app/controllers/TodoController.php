@@ -8,7 +8,7 @@ class TodoController extends Controller
 
         $todoModel = new Todo();
         $todos = $todoModel->allByUser($userId);
-        
+
         $this->view('todo/index', compact('todos'));
     }
 
