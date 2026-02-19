@@ -127,3 +127,12 @@
 [2026-02-19 07:14:31] user_id=2 ip=::1 method=GET path=/mvc/todos/create
 [2026-02-19 07:14:36] user_id=2 ip=::1 method=POST path=/mvc/todos
 [2026-02-19 07:14:36] user_id=2 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 07:15:10] user_id=2 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 07:15:11] user_id=2 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 07:15:15] user_id=2 ip=::1 method=GET path=/mvc/todos/create
+[2026-02-19 07:15:18] user_id=2 ip=::1 method=GET path=/mvc/logout
+[2026-02-19 07:15:18] user_id=null ip=::1 method=GET path=/mvc/login
+[2026-02-19 07:15:20] user_id=null ip=::1 method=GET path=/mvc/register
+[2026-02-19 07:16:09] user_id=null ip=::1 method=GET path=/mvc/register
+[2026-02-19 07:16:20] user_id=null ip=::1 method=GET path=/mvc/todos
+[2026-02-19 07:16:20] user_id=null ip=::1 method=GET path=/mvc/login

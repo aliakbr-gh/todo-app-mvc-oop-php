@@ -57,7 +57,7 @@ class Logger
         try {
             $db = Database::getInstance();
             $stmt = $db->prepare(
-                "INSERT INTO app_logs (user_id, ip, method, path, created_at)
+                "INSERT INTO logs (user_id, ip, method, path, created_at)
                  VALUES (?, ?, ?, ?, NOW())"
             );
             $stmt->execute([

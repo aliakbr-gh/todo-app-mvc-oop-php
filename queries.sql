@@ -23,13 +23,13 @@ CREATE TABLE todos (
 -- Run on existing databases (one-time):
 -- ALTER TABLE todos ADD COLUMN image_path VARCHAR(255) NULL AFTER description;
 
-CREATE TABLE app_logs (
+CREATE TABLE logs (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     user_id INT UNSIGNED NULL,
     ip VARCHAR(45) NULL,
     method VARCHAR(10) NULL,
     path VARCHAR(255) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_app_logs_user_id (user_id),
-    INDEX idx_app_logs_created_at (created_at)
+    INDEX idx_logs_user_id (user_id),
+    INDEX idx_logs_created_at (created_at)
 );
