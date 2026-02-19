@@ -22,8 +22,6 @@ class TodoController extends Controller
 
     public function index()
     {
-        $this->requireAuth();
-        $this->requireRole(['admin', 'manager']);
         $userId = $this->currentUserId();
 
         $todoModel = new Todo();
@@ -34,13 +32,11 @@ class TodoController extends Controller
 
     public function createForm()
     {
-        $this->requireAuth();
         $this->view('todo/create');
     }
 
     public function store()
     {
-        $this->requireAuth();
         $userId = $this->currentUserId();
 
         $title = trim($_POST['title'] ?? '');
@@ -60,7 +56,6 @@ class TodoController extends Controller
 
     public function editForm()
     {
-        $this->requireAuth();
         $userId = $this->currentUserId();
         $id = (int) ($_GET['id'] ?? 0);
 
@@ -71,7 +66,6 @@ class TodoController extends Controller
 
     public function update()
     {
-        $this->requireAuth();
         $userId = $this->currentUserId();
         $id = (int) ($_POST['id'] ?? 0);
 
@@ -94,7 +88,6 @@ class TodoController extends Controller
 
     public function destroy()
     {
-        $this->requireAuth();
         $userId = $this->currentUserId();
         $id = (int) ($_POST['id'] ?? 0);
 

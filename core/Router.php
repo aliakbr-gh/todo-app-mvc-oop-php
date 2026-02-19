@@ -7,14 +7,20 @@ class Router
         'POST' => [],
     ];
 
-    public function get(string $path, callable|array $handler): void
+    public function get(string $path, callable|array $handler, array $middleware = []): void
     {
-        $this->routes['GET'][$path] = $handler;
+        $this->routes['GET'][$path] = [
+            'handler' => $handler,
+            'middleware' => $middleware,
+        ];
     }
 
-    public function post(string $path, callable|array $handler): void
+    public function post(string $path, callable|array $handler, array $middleware = []): void
     {
-        $this->routes['POST'][$path] = $handler;
+        $this->routes['POST'][$path] = [
+            'handler' => $handler,
+            'middleware' => $middleware,
+        ];
     }
 
     public function dispatch(string $method, string $uri)
@@ -25,13 +31,21 @@ class Router
 
         Logger::request();
 
-        $handler = $this->routes[$method][$path] ?? null;
+        $route = $this->routes[$method][$path] ?? null;
 
-        if (!$handler) {
+        if (!$route) {
             http_response_code(404);
             echo "404 Not Found";
             return;
         }
+
+        foreach ($route['middleware'] as $middleware) {
+            if (is_callable($middleware)) {
+                $middleware();
+            }
+        }
+
+        $handler = $route['handler'];
 
         if (is_array($handler)) {
             [$class, $methodName] = $handler;

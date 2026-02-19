@@ -1,0 +1,16 @@
+[2026-02-19 05:38:32] user_id=null ip=::1 method=GET path=/mvc/login
+[2026-02-19 05:38:34] user_id=null ip=::1 method=GET path=/mvc/register
+[2026-02-19 05:38:39] user_id=null ip=::1 method=POST path=/mvc/register
+[2026-02-19 05:38:39] user_id=null ip=::1 method=GET path=/mvc/login
+[2026-02-19 05:38:43] user_id=null ip=::1 method=POST path=/mvc/login
+[2026-02-19 05:38:43] user_id=3 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 05:38:47] user_id=null ip=::1 method=GET path=/mvc/todos/create
+[2026-02-19 05:38:47] user_id=null ip=::1 method=GET path=/mvc/login
+[2026-02-19 05:39:04] user_id=null ip=::1 method=GET path=/mvc/logout
+[2026-02-19 05:39:04] user_id=null ip=::1 method=GET path=/mvc/login
+[2026-02-19 05:39:10] user_id=null ip=::1 method=GET path=/mvc/todos
+[2026-02-19 05:39:10] user_id=null ip=::1 method=GET path=/mvc/login
+[2026-02-19 05:39:15] user_id=null ip=::1 method=POST path=/mvc/login
+[2026-02-19 05:39:16] user_id=2 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 05:39:18] user_id=null ip=::1 method=GET path=/mvc/todos/create
+[2026-02-19 05:39:18] user_id=null ip=::1 method=GET path=/mvc/login
