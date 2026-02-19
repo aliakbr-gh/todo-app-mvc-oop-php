@@ -13,3 +13,9 @@ define('SESSION_TIMEOUT', 1200);
 define('LOG_FILE_ENABLED', true);
 define('LOG_DB_ENABLED', true);
 define('LOG_FILE_PATH', BASE_PATH . '/storage/logs/app.log');
+
+// Rate limiter config
+define('RATE_LIMIT_ENABLED', true);
+define('RATE_LIMIT_PER_SECOND', 5);
+define('RATE_LIMIT_BLOCK_SECONDS', 300);
+define('RATE_LIMIT_STORAGE_PATH', BASE_PATH . '/storage/rate-limit');

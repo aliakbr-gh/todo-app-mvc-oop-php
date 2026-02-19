@@ -29,6 +29,7 @@ class Router
         $path = str_replace(BASE_URL, '', $path);
         if ($path === '') $path = '/';
 
+        RateLimiter::enforce();
         Logger::request();
 
         $route = $this->routes[$method][$path] ?? null;

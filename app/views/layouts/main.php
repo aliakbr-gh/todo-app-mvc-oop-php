@@ -1,6 +1,13 @@
 <?php
 $successMsg = Session::flash('success');
 $errorMsg   = Session::flash('error');
+$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+$requestPath = str_replace(BASE_URL, '', $requestPath);
+if ($requestPath === '') {
+    $requestPath = '/';
+}
+$isAuthPage = in_array($requestPath, ['/login', '/register'], true);
+$isLoggedIn = Auth::check();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,25 +27,58 @@ $errorMsg   = Session::flash('error');
         header {
             background: #016833;
             color: #fff;
-            padding: 10px 20px;
+            padding: 12px 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
         }
 
-        header a {
+        .app-shell {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: #0f5132;
             color: #fff;
-            margin-left: 10px;
+            padding: 20px 14px;
+        }
+
+        .sidebar h3 {
+            margin: 0 0 14px;
+            font-size: 16px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #fff;
             text-decoration: none;
+            padding: 8px 10px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .app-content {
+            min-width: 0;
         }
 
         main {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 900px;
+            margin: 20px;
             background: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-main {
+            max-width: 460px;
+            margin: 40px auto;
         }
 
         .btn {
@@ -236,22 +276,35 @@ $errorMsg   = Session::flash('error');
     <div id="loader">
         <div class="spinner"></div>
     </div>
-    <header>
-        <div><strong>Todo MVC</strong></div>
-        <nav>
-            <?php if (Session::get('user_id')): ?>
+    <?php if ($isAuthPage): ?>
+        <main class="auth-main">
+            <?= $content ?>
+        </main>
+    <?php elseif ($isLoggedIn): ?>
+        <div class="app-shell">
+            <aside class="sidebar">
+                <h3>Navigation</h3>
                 <a href="<?= BASE_URL ?>/todos">Todos</a>
+                <a href="<?= BASE_URL ?>/todos/create">Create Todo</a>
                 <a href="<?= BASE_URL ?>/logout">Logout</a>
-            <?php else: ?>
-                <a href="<?= BASE_URL ?>/login">Login</a>
-                <a href="<?= BASE_URL ?>/register">Register</a>
-            <?php endif; ?>
-        </nav>
-    </header>
-
-    <main>
-        <?= $content ?>
-    </main>
+            </aside>
+            <div class="app-content">
+                <header>
+                    <div><strong>Todo MVC</strong></div>
+                </header>
+                <main>
+                    <?= $content ?>
+                </main>
+            </div>
+        </div>
+    <?php else: ?>
+        <header>
+            <div><strong>Todo MVC</strong></div>
+        </header>
+        <main>
+            <?= $content ?>
+        </main>
+    <?php endif; ?>
 
     <div id="confirm-modal" aria-hidden="true">
         <div class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
