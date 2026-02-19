@@ -8,6 +8,7 @@ if ($requestPath === '') {
 }
 $isAuthPage = in_array($requestPath, ['/login', '/register'], true);
 $isLoggedIn = Auth::check();
+$currentUser = $isLoggedIn ? Auth::user() : null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,6 +36,9 @@ $isLoggedIn = Auth::check();
                 <ul>
                     <li><a href="<?= BASE_URL ?>/todos">Todos</a></li>
                     <li><a href="<?= BASE_URL ?>/todos/create">Create Todo</a></li>
+                    <?php if (($currentUser['role'] ?? 'user') === 'admin'): ?>
+                        <li><a href="<?= BASE_URL ?>/admin/backup">Database Backup</a></li>
+                    <?php endif; ?>
                     <li><a href="<?= BASE_URL ?>/logout">Logout</a></li>
                 </ul>
             </nav>

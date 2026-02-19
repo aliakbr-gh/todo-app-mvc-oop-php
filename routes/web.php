@@ -15,3 +15,6 @@ $router->post('/todos', [TodoController::class, 'store'], [Middleware::auth()]);
 $router->get('/todos/edit', [TodoController::class, 'editForm'], [Middleware::auth()]);
 $router->post('/todos/update', [TodoController::class, 'update'], [Middleware::auth()]);
 $router->post('/todos/delete', [TodoController::class, 'destroy'], [Middleware::auth()]);
+
+// Admin routes
+$router->get('/admin/backup', [BackupController::class, 'downloadDatabase'], [Middleware::auth(), Middleware::role(['admin'])]);

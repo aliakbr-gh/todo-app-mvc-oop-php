@@ -136,3 +136,10 @@
 [2026-02-19 07:16:09] user_id=null ip=::1 method=GET path=/mvc/register
 [2026-02-19 07:16:20] user_id=null ip=::1 method=GET path=/mvc/todos
 [2026-02-19 07:16:20] user_id=null ip=::1 method=GET path=/mvc/login
+[2026-02-19 07:30:23] user_id=null ip=::1 method=GET path=/mvc/login
+[2026-02-19 07:30:24] user_id=null ip=::1 method=GET path=/mvc/login
+[2026-02-19 07:30:28] user_id=null ip=::1 method=GET path=/mvc/admin/backup
+[2026-02-19 07:30:28] user_id=null ip=::1 method=GET path=/mvc/login
+[2026-02-19 07:30:32] user_id=null ip=::1 method=POST path=/mvc/login
+[2026-02-19 07:30:33] user_id=2 ip=::1 method=GET path=/mvc/todos
+[2026-02-19 07:30:35] user_id=2 ip=::1 method=GET path=/mvc/admin/backup

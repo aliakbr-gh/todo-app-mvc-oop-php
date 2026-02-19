@@ -5,6 +5,7 @@ require_once __DIR__ . '/../core/helpers.php';
 require_once __DIR__ . '/../core/Database.php';
 require_once __DIR__ . '/../core/Session.php';
 require_once __DIR__ . '/../core/Logger.php';
+require_once __DIR__ . '/../core/DatabaseBackup.php';
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../core/Authorization.php';
 require_once __DIR__ . '/../core/RateLimiter.php';
@@ -21,6 +22,7 @@ require_once __DIR__ . '/../app/models/Todo.php';
 // Controllers
 require_once __DIR__ . '/../app/controllers/AuthController.php';
 require_once __DIR__ . '/../app/controllers/TodoController.php';
+require_once __DIR__ . '/../app/controllers/BackupController.php';
 
 Session::start();
 
